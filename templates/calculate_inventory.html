@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+    #result__container {
+        margin-top: 30px;
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="calculate__div">
+    <div class="mb-4">
+        <h2>Calculate Inventory</h2>
+    </div>
+    <form id="inventory__form" method="post">
+        {% csrf_token %}
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Initial Quantity</label>
+          <div class="col-sm-6">
+            <input type="number" class="form-control" id="initial_quantity" name="initial_quantity" required>
+          </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Monthly Demand Rate</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="demand_rate" name="demand_rate" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Lead Time (Days)</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="lead_time" name="lead_time" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Holding Cost (Naira)</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="holding_cost" name="holding_cost" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Ordering Cost (Naira)</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="ordering_cost" name="ordering_cost" required>
+            </div>
+        </div>
+        <div class="form-group row mt-3">
+            <div class="col-sm-8">
+                <button class="btn btn-success btn-block"><span class="btn-text">Calculate</span></button>
+            </div>
+        </div>
+      </form>
+</div>
+<div id="result__container">
+    <div class="results" id="results">
+        <h3 class="mb-3">Calculation Results</h3>
+        <!-- Visualization for real-time updates -->
+        <div class="my-2" style="width:50%">
+            <canvas id="inventoryChart"></canvas>
+        </div>
+        <p><strong>Economic Order Quantity (EOQ):</strong> <span id="eoq"></span></p>
+        <p><strong>Reorder Point:</strong> <span id="reorder_level"></span></p>
+        <p><strong>Safety Stock:</strong> <span id="safety_stock"></span></p>
+        <p><strong>Order Quantity:</strong> <span id="order_quantity"></span></p>
+    </div>
+
+    <div class="graph__container" id="graph__container">
+        <h3 class="mb-3">Inventory Model Graphs</h3>
+        <img id="graph">
+    </div>
+</div>
+<script>
+    // Initialize Chart.js
+    const ctx = document.getElementById('inventoryChart').getContext('2d');
+    let inventoryChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['EOQ', 'Reorder Point', 'Safety Stock'],
+            datasets: [{
+                label: 'Inventory Parameters',
+                data: [0, 0, 0],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(75, 192, 192, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(75, 192, 192, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Update Chart with Data from AJAX
+    function updateChart(data) {
+        inventoryChart.data.datasets[0].data = [data.eoq, data.reorder_level, data.safety_stock];
+        inventoryChart.update();
+    }
+</script>
+<script>
+    calBtn = document.querySelector('.btn-block'),
+    btnText = calBtn.querySelector('.btn-text');
+
+    console.log(calBtn);
+    console.log(btnText);
+
+    document.getElementById('inventory__form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        console.log('form submitted');
+
+        let formData = new FormData(this);
+            
+        // Loading button animation
+        btnText.innerHTML = `Simulating...<img width='30px' src="{% static 'images/loading.gif' %}">`;
+        calBtn.disabled = true,
+
+        // Loading animation
+        btnText.innerHTML = "<img />"
+
+        fetch(window.location.href, {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            btnText.innerHTML = `Calculate`;
+            calBtn.disabled = false;
+            document.getElementById('eoq').textContent = data.eoq;
+            document.getElementById('reorder_level').textContent = data.reorder_level;
+            document.getElementById('safety_stock').textContent = data.safety_stock;
+            document.getElementById('order_quantity').textContent = data.order_quantity;
+
+            // Show results
+            document.getElementById('result__container').style.display = 'block';
+            updateChart(data);
+
+            // Update and show graph
+            document.getElementById('graph').src = 'data:image/png;base64,' + data.graph;
+            document.getElementById('graph__container').style.display = 'block';
+        })
+        .catch(error => console.error('Error:', error));
+    });
+</script>
+{% endblock %}

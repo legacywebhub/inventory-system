@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+    .table__header {
+        margin: 10px 0px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .table__title {
+        font-size: 25px;
+        font-weight: bold;
+    }
+    .stock__name {
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% for message in messages %}
+<p {% if message.tags %}class="my-3 text-center text-{{ message.tags }}"{% endif %}>{{message}}</p>
+{% endfor %}
+<div>
+    <div class="table__header"><span class="table__title">Inventory Table</span><a class="btn btn-primary" href="{% url 'add_inventory' %}" role="button">Add Inventory</a></div>
+    <table class="table table-responsive table-hover table-md">
+        <thead>
+          <tr>
+            <th scope="col">Stock</th>
+            <th scope="col">Initial Quantity</th>
+            <th scope="col">Reorder Level</th>
+            <th scope="col">Safety Stock</th>
+            <th scope="col">Lead Time (Days)</th>
+            <th scope="col">EOQ</th>
+            <th scope="col">Order Quantity</th>
+            <th scope="col">Demand Rate (Monthly)</th>
+            <th scope="col">Unit Price (Naira)</th>
+            <th scope="col">Holding Cost (Naira)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for inventory in inventories %}
+          <tr>
+            <td class="stock__name">
+                <a href="{% url 'inventory' id=inventory.id %}">{{ inventory.stock_name }}</a>
+            </td>
+            <td>{{ inventory.initial_quantity }}</td>
+            <td>{{ inventory.reorder_level }}</td>
+            <td>{{ inventory.safety_stock }}</td>
+            <td>{{ inventory.lead_time }}</td>
+            <td>{{ inventory.eoq }}</td>
+            <td>{{ inventory.order_quantity }}</td>
+            <td>{{ inventory.demand_rate }}</td>
+            <td>{{ inventory.holding_cost }}</td>
+            <td>{{ inventory.ordering_cost }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+    <nav>
+        <ul class="pagination">
+          {% if inventories.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ inventories.previous_page_number }}">Previous</a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link">Previous</a>
+          </li>
+          {% endif %}
+
+
+          <li class="page-item active aria-current="page">
+            <a class="page-link">{{ inventories.number }}</a>
+          </li>
+
+          {% if inventories.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ inventories.next_page_number }}">Next</a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#">Next</a>
+          </li>
+          {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock %}

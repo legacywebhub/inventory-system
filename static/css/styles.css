@@ -1,0 +1,14 @@
+/* Simple styling for input and output sections */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.input-section, .output-section {
+    margin: 20px 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}

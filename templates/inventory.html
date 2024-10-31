@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+    <style>
+        .inventory-details {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .inventory-details h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        .inventory-details p {
+            font-size: 16px;
+            color: #555;
+            margin: 10px 0;
+        }
+
+        .back-button {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="inventory-details">
+    <h1>{{ inventory.stock_name }}</h1>
+    <p><strong>Category:</strong> {{ inventory.category }}</p>
+    <p><strong>Initial Quantity:</strong> {{ inventory.initial_quantity }}</p>
+    <p><strong>Reorder Level:</strong> {{ inventory.reorder_level }}</p>
+    <p><strong>Safety Stock:</strong> {{ inventory.safety_stock }}</p>
+    <p><strong>Lead Time (days):</strong> {{ inventory.lead_time }}</p>
+    <p><strong>EOQ (Economic Order Quantity):</strong> {{ inventory.eoq }}</p>
+    <p><strong>Order Quantity:</strong> {{ inventory.order_quantity }}</p>
+    <p><strong>Demand Rate:</strong> {{ inventory.demand_rate }}</p>
+    <p><strong>Holding Cost:</strong> N{{ inventory.holding_cost }}</p>
+    <p><strong>Ordering Cost:</strong> N{{ inventory.ordering_cost }}</p>
+
+    <a href="{% url 'home' %}" class="back-button">Back to Inventory List</a>
+</div>
+{% endblock %}

@@ -1,0 +1,235 @@
+*, *::after, *::before {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+}
+
+html {
+    font-size: 62.5%; /* 10px == 1rem */
+}
+
+:root {
+    --primary-color: #ff6347;
+    --light-dark: #333333;
+    --dark-dark: #1a1a1a;
+    --dim-light: #fafafa;
+    --faded-light: #aaaaaa;
+    --light: #ffffff;
+}
+
+body {
+    min-height: 100vh;
+    width: 100vw !important;
+    background: var(--dark-dark) !important;
+    color: var(--dim-light) !important;
+    font-size: 1.5rem;
+    font-family: sans-serif;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    font-size: 1.4rem;
+}
+
+button {
+    font-weight: bold;
+    border: none;
+    border-radius: .3rem;
+    padding: 1.5rem 1rem;
+    color: var(--light);
+    background-color: var(--primary-color);
+}
+
+main {
+    width: 100%;
+    max-width: 90%;
+    min-height: 80vh;
+    margin: 2rem auto;
+    padding: 0rem 1.5rem;
+}
+
+.primary {
+    color: var(--primary-color);
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+
+/* COMMON ELEMENTS */
+
+.title {
+    text-align: center;
+    margin-bottom: 5rem;
+    font-family: sans-serif;
+    position: relative;
+}
+
+.title::after {
+    content: '';
+    position: absolute;
+    bottom: -4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8rem;
+    height: .4rem;
+    background-color: var(--light);
+    border-radius: .2rem;
+    margin-bottom: 2rem;
+}
+
+.title__heading{
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: .3rem;
+    margin: .3rem 0rem;
+}
+
+.title__body{
+    font-size: 1.3rem;
+    letter-spacing: .3rem;
+    text-transform: lowercase;
+    color: var(--primary-color);
+}
+
+
+
+/*   HEADER SECTION */ 
+
+header {
+    font-weight: bold;
+    width: 100vw;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+header a {
+    color: var(--dim-light);
+}
+
+.logo__div {
+    font-size: large;
+}
+
+nav {
+    background: var(--light-dark);
+    color: var(--light);
+    padding: 1rem 2rem;
+    border-radius: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.menu__icon {
+    color: var(--light);
+    display: none;
+}
+
+.nav__list {
+    display: inline-block;
+    position: absolute;
+    right: 2rem;  /* visible - 2rem, hidden - -50rem*/
+    top: 6.5rem;
+    background: var(--light-dark);
+    color: var(--light);
+    padding: 2rem 2rem;
+    z-index: 99;
+    visibility: hidden;
+    transition: visibility .1s;
+}
+
+.nav__list div {
+    padding: .7rem 0rem;
+    border-bottom: var(--faded-light) .1rem solid;
+}
+
+.nav__list::before {
+    content: '';
+    position: absolute;
+    top: -0.5rem;
+    right: 1rem;
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+    border-left: 0;
+    background-color: var(--light-dark);
+}
+
+/* FOOTER SECTION */
+
+.footer {
+    background-color: var(--dark-dark);
+    color: #ddd;
+    padding: 2rem 0;
+    text-align: center;
+    position: relative;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8rem;
+    height: .4rem;
+    background-color: var(--primary-color);
+    border-radius: .2rem;
+    margin-bottom: 2rem;
+}
+
+.footer .contact-info p {
+    margin: 1rem 0;
+}
+
+.footer .contact-info p span {
+    font-weight: bold;
+    color: var(--light);
+}
+
+.footer p {
+    margin: .5rem 0;
+}
+
+.footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer a:hover {
+    color: var(--light);
+}
+
+.footer p.copyright {
+    margin-top: .2rem;
+    font-size: 1rem;
+    color: var(--faded-light);
+}
+
+@media (max-width: 60rem) {
+    .footer {
+        padding: 2rem 0;
+    }
+}
+
+
+
+/* RESPONSIVENESS */
+
+@media (max-width: 62rem) {
+    nav {
+        display: none;
+    }
+
+    .menu__icon {
+        display: inline-block;
+    }
+}

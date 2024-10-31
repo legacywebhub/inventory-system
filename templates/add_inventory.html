@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div>
+    <div class="mb-3">
+        <h2>Add Inventory</h2>
+        <p>Response fields are automatically calcuated</p>
+    </div>
+    <form id="inventoryForm" method="post">
+        {% csrf_token %}
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Stock Name</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="stock_name" maxlength="60" required/>
+          </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Category</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" name="category" maxlength="20" required/>
+            </div>
+          </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Unit Price</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="unit_price" name="unit_price" maxlength="10" required>
+            </div>
+          </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Initial Quantity</label>
+          <div class="col-sm-6">
+            <input type="number" class="form-control" id="initial_quantity" name="initial_quantity" maxlength="10" required>
+          </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Monthly Demand Rate</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="demand_rate" name="demand_rate" maxlength="10" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Lead Time (Days)</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="lead_time" name="lead_time" maxlength="10" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Holding Cost (Naira)</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="holding_cost" name="holding_cost" maxlength="10" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Ordering Cost (Naira)</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="ordering_cost" name="ordering_cost" maxlength="10" required>
+            </div>
+        </div>
+        <div class="form-group row mt-5">
+          <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Add Inventory</button>
+          </div>
+        </div>
+      </form>
+</div>
+{% endblock %}
